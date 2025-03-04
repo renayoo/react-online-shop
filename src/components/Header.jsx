@@ -1,8 +1,8 @@
-// src/components/Header.js
+// src/components/Header.jsx
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const Header = () => {
+const Header = React.memo(() => {
     console.log("Header is rendering"); // Debugging log
 
     return (
@@ -19,6 +19,6 @@ const Header = () => {
             </div>
         </header>
     );
-};
+});
 
 export default Header;

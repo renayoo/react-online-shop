@@ -1,7 +1,7 @@
-// src/components/Footer.js
+// src/components/Footer.jsx
 import React from 'react';
 
-const Footer = () => {
+const Footer = React.memo(() => {
     console.log("Footer is rendering"); // Debugging log
 
     return (
@@ -9,6 +9,6 @@ const Footer = () => {
             <p>&copy; 2025 React Online Shop</p>
         </footer>
     );
-};
+});
 
 export default Footer;
