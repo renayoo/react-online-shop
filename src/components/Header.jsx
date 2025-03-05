@@ -1,7 +1,8 @@
 // src/components/Header.jsx
+// src/components/Header.jsx
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useCart } from '../context/CartContext';  // Import the useCart hook
+import { useCart } from '../context/CartContext';  
 
 const Header = React.memo(() => {
     const { cart } = useCart();  // Get the cart state from the context
@@ -9,7 +10,7 @@ const Header = React.memo(() => {
 
     // Update the cart count whenever the cart changes
     useEffect(() => {
-        setCartCount(cart.length);
+        setCartCount(cart.reduce((acc, product) => acc + product.quantity, 0)); // Count total quantity
     }, [cart]);  // This effect runs every time the cart changes
 
     console.log("Header is rendering"); // Debugging log

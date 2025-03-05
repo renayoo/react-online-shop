@@ -1,7 +1,7 @@
 // src/pages/ProductIdPage.jsx
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useCart } from '../context/CartContext';  // Import the custom hook
+import { useCart } from '../context/CartContext'; 
 
 const ProductIdPage = () => {
     const { id } = useParams();
@@ -9,7 +9,7 @@ const ProductIdPage = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
-    const { addToCart } = useCart();  // Use the addToCart function from context
+    const { addToCart } = useCart();  
 
     useEffect(() => {
         const fetchProductDetails = async () => {

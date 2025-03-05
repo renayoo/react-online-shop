@@ -1,3 +1,4 @@
+// src/context/CartContext.jsx
 // src/context/CartContext.js
 import React, { createContext, useContext, useState, useEffect } from "react";
 
@@ -26,19 +27,37 @@ export const CartProvider = ({ children }) => {
     // Function to add an item to the cart
     const addToCart = (product) => {
         setCart((prevCart) => {
-            const updatedCart = [...prevCart, product];
-            return updatedCart;
+            const existingProduct = prevCart.find((item) => item.id === product.id);
+            if (existingProduct) {
+                // If the product already exists, increase the quantity
+                return prevCart.map((item) =>
+                    item.id === product.id
+                        ? { ...item, quantity: item.quantity + 1 }  // Update quantity
+                        : item
+                );
+            }
+            return [...prevCart, { ...product, quantity: 1 }]; // Add product with quantity 1 if new
         });
     };
 
-    // Function to clear the cart from both state and localStorage
-    const clearCart = () => {
-        setCart([]);
-        localStorage.removeItem("cart"); // Clear cart from localStorage
+    // Function to remove an item from the cart
+    const removeFromCart = (productId) => {
+        setCart((prevCart) => prevCart.filter((item) => item.id !== productId));
+    };
+
+    // Function to update quantity of an item
+    const updateQuantity = (productId, quantity) => {
+        setCart((prevCart) =>
+            prevCart.map((item) =>
+                item.id === productId
+                    ? { ...item, quantity: parseInt(quantity, 10) } // Update quantity
+                    : item
+            )
+        );
     };
 
     return (
-        <CartContext.Provider value={{ cart, addToCart, clearCart }}>
+        <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateQuantity }}>
             {children}
         </CartContext.Provider>
     );
