@@ -1,6 +1,6 @@
 // src/pages/Homepage.jsx
 import React, { useState, useEffect } from 'react'; 
-import { Link, useNavigate } from 'react-router-dom';  // Import useNavigate
+import { Link, useNavigate } from 'react-router-dom'; 
 
 const Homepage = () => {
     const [products, setProducts] = useState([]);
@@ -28,9 +28,14 @@ const Homepage = () => {
         fetchProducts();
     }, []);
 
-    const filteredProducts = products.filter(product =>
-        product.title.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    // Filter products based on search query
+    const filteredProducts = products.filter(product => {
+        // Title and tags
+        return (
+            product.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+            product.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
+        );
+    });
 
     if (loading) {
         return <div>Loading...</div>;
