@@ -1,13 +1,15 @@
 // src/pages/ProductIdPage.jsx
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useCart } from '../context/CartContext';  // Import the custom hook
 
 const ProductIdPage = () => {
     const { id } = useParams();
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const navigate = useNavigate(); // Hook to navigate programmatically
+    const navigate = useNavigate();
+    const { addToCart } = useCart();  // Use the addToCart function from context
 
     useEffect(() => {
         const fetchProductDetails = async () => {
@@ -36,7 +38,11 @@ const ProductIdPage = () => {
         return 0;
     };
 
-    // Handle "Back to Products" button click
+    const handleAddToCart = () => {
+        addToCart(product);  // Add the current product to the cart
+        alert('Product added to cart!');
+    };
+
     const handleBackClick = () => {
         navigate('/'); // Navigate back to the homepage (product list)
     };
@@ -65,7 +71,6 @@ const ProductIdPage = () => {
             />
             <p>{product.description}</p>
 
-            {/* Display price or discounted price */}
             {product.discountedPrice < product.price ? (
                 <>
                     <p className="text-lg font-bold">
@@ -96,12 +101,14 @@ const ProductIdPage = () => {
                 </ul>
             </div>
 
-            {/* Back to Products Button */}
             <div className="mt-4">
-                <button
-                    onClick={handleBackClick}
-                    className="px-4 py-2 bg-blue-500 text-white rounded-md"
-                >
+                <button onClick={handleAddToCart} className="px-4 py-2 bg-blue-500 text-white rounded-md">
+                    Add to Cart
+                </button>
+            </div>
+
+            <div className="mt-4">
+                <button onClick={handleBackClick} className="px-4 py-2 bg-gray-500 text-white rounded-md">
                     Back to Products
                 </button>
             </div>

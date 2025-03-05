@@ -1,8 +1,17 @@
 // src/components/Header.jsx
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useCart } from '../context/CartContext';  // Import the useCart hook
 
 const Header = React.memo(() => {
+    const { cart } = useCart();  // Get the cart state from the context
+    const [cartCount, setCartCount] = useState(0);
+
+    // Update the cart count whenever the cart changes
+    useEffect(() => {
+        setCartCount(cart.length);
+    }, [cart]);  // This effect runs every time the cart changes
+
     console.log("Header is rendering"); // Debugging log
 
     return (
@@ -10,16 +19,13 @@ const Header = React.memo(() => {
             <nav>
                 <Link to="/" className="mr-4">Home</Link>
                 <Link to="/contact" className="mr-4">Contact</Link>
-            </nav>
-            <div>
                 <Link to="/cart">
                     <span>🛒 Cart</span>
-                    <span>0</span> {/* This will be dynamic */}
+                    <span>{cartCount}</span> {/* Dynamic cart count */}
                 </Link>
-            </div>
+            </nav>
         </header>
     );
 });
 
 export default Header;
-
