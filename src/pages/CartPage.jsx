@@ -10,7 +10,7 @@ const CartPage = () => {
             <p>This is the Cart Page (under construction).</p>
             
             {/* Button to go to the Checkout Page */}
-            <button onClick={() => navigate("/checkout")}>Proceed to Checkout</button>
+            <button onClick={() => navigate("/checkout-success")}>Proceed to Checkout</button>
         </div>
     );
 };

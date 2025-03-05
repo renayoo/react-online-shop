@@ -1,12 +1,13 @@
 // src/pages/ProductIdPage.jsx
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 const ProductIdPage = () => {
-    const { id } = useParams(); // Get the product ID from the URL
+    const { id } = useParams();
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const navigate = useNavigate(); // Hook to navigate programmatically
 
     useEffect(() => {
         const fetchProductDetails = async () => {
@@ -25,7 +26,20 @@ const ProductIdPage = () => {
         };
 
         fetchProductDetails();
-    }, [id]); // Re-fetch if the product ID changes
+    }, [id]);
+
+    const calculateDiscount = (price, discountedPrice) => {
+        if (price > discountedPrice) {
+            const discount = ((price - discountedPrice) / price) * 100;
+            return discount.toFixed(0);
+        }
+        return 0;
+    };
+
+    // Handle "Back to Products" button click
+    const handleBackClick = () => {
+        navigate('/'); // Navigate back to the homepage (product list)
+    };
 
     if (loading) {
         return <div>Loading...</div>;
@@ -39,6 +53,8 @@ const ProductIdPage = () => {
         return <div>Product not found</div>;
     }
 
+    const discount = calculateDiscount(product.price, product.discountedPrice);
+
     return (
         <div className="p-4">
             <h1>{product.title}</h1>
@@ -48,12 +64,27 @@ const ProductIdPage = () => {
                 className="w-full h-96 object-cover mb-4"
             />
             <p>{product.description}</p>
-            <p className="text-lg font-bold">
-                ${product.discountedPrice.toFixed(2)}{' '}
-                <span className="line-through text-gray-500">${product.price.toFixed(2)}</span>
-            </p>
+
+            {/* Display price or discounted price */}
+            {product.discountedPrice < product.price ? (
+                <>
+                    <p className="text-lg font-bold">
+                        On sale for: ${product.discountedPrice.toFixed(2)}{' '}
+                        <span className="line-through text-gray-500">
+                            Original Price: ${product.price.toFixed(2)}
+                        </span>
+                    </p>
+                    <p className="text-green-500 font-semibold">
+                        Save {discount}%!
+                    </p>
+                </>
+            ) : (
+                <p className="text-lg font-bold">Price: ${product.price.toFixed(2)}</p>
+            )}
+
             <p>Rating: {product.rating} stars</p>
             <p>Tags: {product.tags.join(', ')}</p>
+
             <div>
                 <h4>Reviews:</h4>
                 <ul>
@@ -63,6 +94,16 @@ const ProductIdPage = () => {
                         </li>
                     ))}
                 </ul>
+            </div>
+
+            {/* Back to Products Button */}
+            <div className="mt-4">
+                <button
+                    onClick={handleBackClick}
+                    className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                >
+                    Back to Products
+                </button>
             </div>
         </div>
     );
