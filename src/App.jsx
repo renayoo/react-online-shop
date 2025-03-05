@@ -5,7 +5,7 @@ import Layout from './components/Layout';
 import Homepage from './pages/Homepage';
 import ProductPage from './pages/ProductIdPage';
 import CartPage from './pages/CartPage';
-import CheckoutPage from './pages/CheckOutPage';
+import CheckoutPage from './pages/CheckoutPage';
 import CheckoutSuccessPage from './pages/CheckoutSuccessPage';
 import ContactPage from './pages/ContactPage';
 
