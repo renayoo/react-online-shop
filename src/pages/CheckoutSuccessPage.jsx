@@ -4,25 +4,29 @@ import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 
 const CheckoutSuccessPage = () => {
-    const { clearCart } = useCart();
+    const { clearCart, cart } = useCart();
     const navigate = useNavigate();
 
-    // Clear the cart when the component mounts
     useEffect(() => {
-        clearCart();  // Clear the cart from both state and localStorage
-        console.log("Cart cleared.");
-    }, [clearCart]); // Only run when the component mounts, don't add any unnecessary dependencies
+        console.log("Cart before clearing:", cart);
+        clearCart();
+        console.log("Cart cleared successfully.");
+    }, []); // Runs only once on mount
 
-    // Function to handle navigation on button click
     const handleBackToStore = () => {
-        navigate("/");  // Navigate to the homepage
+        navigate("/");
     };
 
     return (
-        <div>
-            <h2>Thank you for your purchase!</h2>
-            <p>Your order was successful.</p>
-            <button onClick={handleBackToStore}>Back to Store</button>
+        <div className="flex flex-col items-center justify-center min-h-screen">
+            <h2 className="text-2xl font-bold text-green-600">Thank You for Your Purchase!</h2>
+            <p className="mt-2 text-lg">Your order was successful.</p>
+            <button
+                onClick={handleBackToStore}
+                className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600"
+            >
+                Back to Store
+            </button>
         </div>
     );
 };

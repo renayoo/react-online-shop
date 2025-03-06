@@ -11,7 +11,7 @@ export const CartProvider = ({ children }) => {
     // Load the cart from localStorage when the app starts
     useEffect(() => {
         const savedCart = JSON.parse(localStorage.getItem("cart"));
-        if (savedCart) {
+        if (savedCart && savedCart.length > 0) {
             setCart(savedCart);
         }
     }, []);
@@ -20,6 +20,8 @@ export const CartProvider = ({ children }) => {
     useEffect(() => {
         if (cart.length > 0) {
             localStorage.setItem("cart", JSON.stringify(cart));
+        } else {
+            localStorage.removeItem("cart"); // Clear localStorage when cart is empty
         }
     }, [cart]);
 
@@ -31,11 +33,11 @@ export const CartProvider = ({ children }) => {
                 // If the product already exists, increase the quantity
                 return prevCart.map((item) =>
                     item.id === product.id
-                        ? { ...item, quantity: item.quantity + 1 }  // Update quantity
+                        ? { ...item, quantity: item.quantity + 1 }
                         : item
                 );
             }
-            return [...prevCart, { ...product, quantity: 1 }]; // Add product with quantity 1 if new
+            return [...prevCart, { ...product, quantity: 1 }];
         });
     };
 
@@ -44,19 +46,25 @@ export const CartProvider = ({ children }) => {
         setCart((prevCart) => prevCart.filter((item) => item.id !== productId));
     };
 
-    // Function to update quantity of an item
+    // Function to update the quantity of an item
     const updateQuantity = (productId, quantity) => {
         setCart((prevCart) =>
             prevCart.map((item) =>
                 item.id === productId
-                    ? { ...item, quantity: parseInt(quantity, 10) } // Update quantity
+                    ? { ...item, quantity: parseInt(quantity, 10) }
                     : item
             )
         );
     };
 
+    // Function to clear the cart (for successful checkout)
+    const clearCart = () => {
+        setCart([]); // Clear cart in state
+        localStorage.removeItem("cart"); // Clear cart in localStorage
+    };
+
     return (
-        <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateQuantity }}>
+        <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateQuantity, clearCart }}>
             {children}
         </CartContext.Provider>
     );
