@@ -31,30 +31,31 @@ const CartPage = () => {
     };
 
     return (
-        <div>
-            <h2>Your Cart</h2>
+        <div className="container mx-auto p-6">
+            <h2 className="text-3xl font-semibold mb-6">Your Cart</h2>
             {cart.length === 0 ? (
-                <div>
-                    <p>Your cart is empty.</p>
+                <div className="text-center">
+                    <p className="text-xl font-semibold mb-4">Your cart is currently empty.</p>
+                    <p className="text-gray-600 mb-6">Browse our products and add them to your cart.</p>
                     <button
                         onClick={handleViewProducts}
-                        className="px-6 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+                        className="px-6 py-2 bg-[#B7B1F2] text-white font-semibold rounded-lg shadow-md hover:bg-[#A59EDD] focus:outline-none focus:ring-2 focus:ring-[#B7B1F2] focus:ring-opacity-50"
                     >
                         View Products
                     </button>
                 </div>
             ) : (
                 <div>
-                    <ul>
+                    <ul className="space-y-4">
                         {cart.map((product) => {
                             return (
-                                <li key={product.id} className="flex items-center space-x-4 border-b py-4">
+                                <li key={product.id} className="flex items-center space-x-4 border-b-2 py-4 border-gray-200">
                                     <img
                                         src={product.image.url}
                                         alt={product.title}
                                         className="w-20 h-20 object-cover rounded"
                                     />
-                                    <div>
+                                    <div className="flex-1">
                                         <p className="text-lg font-semibold">{product.title}</p>
                                         <p>
                                             {/* Show price and discounted price if applicable */}
@@ -97,20 +98,21 @@ const CartPage = () => {
                                             onClick={() => handleRemoveProduct(product.id)}
                                             className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none"
                                         >
-                                            X
+                                            -
                                         </button>
                                     </div>
                                 </li>
                             );
                         })}
                     </ul>
+
                     <p className="text-xl font-semibold mt-4">Total: ${getTotalPrice()}</p>
 
                     <button
                         onClick={() => navigate("/checkout-success")}
-                        className="px-6 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 mt-4"
+                        className="px-6 py-2 bg-[#B7B1F2] text-white font-semibold rounded-lg shadow-md hover:bg-[#A59EDD] focus:outline-none focus:ring-2 focus:ring-[#B7B1F2] focus:ring-opacity-50 mt-4"
                     >
-                        Proceed to Checkout
+                        Place order
                     </button>
                 </div>
             )}

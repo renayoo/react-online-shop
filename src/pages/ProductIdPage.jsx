@@ -1,4 +1,3 @@
-// src/pages/ProductIdPage.jsx
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext'; 
@@ -40,11 +39,20 @@ const ProductIdPage = () => {
 
     const handleAddToCart = () => {
         addToCart(product);  // Add the current product to the cart
-        alert('Product added to cart!');
     };
 
     const handleBackClick = () => {
         navigate('/'); // Navigate back to the homepage (product list)
+    };
+
+    // Function to generate star rating display
+    const renderStars = (rating) => {
+        const maxStars = 5;
+        return [...Array(maxStars)].map((_, i) => (
+            <span key={i} className={i < rating ? "text-yellow-500" : "text-gray-400"}>
+                ★
+            </span>
+        ));
     };
 
     if (loading) {
@@ -62,55 +70,83 @@ const ProductIdPage = () => {
     const discount = calculateDiscount(product.price, product.discountedPrice);
 
     return (
-        <div className="p-4">
-            <h1>{product.title}</h1>
-            <img
-                src={product.image.url}
-                alt={product.image.alt}
-                className="w-full h-96 object-cover mb-4"
-            />
-            <p>{product.description}</p>
+        <div className="container mx-auto p-6">
+            <div className="max-w-5xl mx-auto p-8 bg-white rounded-lg shadow-lg flex flex-col md:flex-row">
+                {/* Product Image */}
+                <div className="flex-1 mb-6 md:mb-0">
+                    <img
+                        src={product.image.url}
+                        alt={product.image.alt}
+                        className="w-full h-96 object-cover mb-4 rounded-lg"
+                    />
+                </div>
 
-            {product.discountedPrice < product.price ? (
-                <>
-                    <p className="text-lg font-bold">
-                        On sale for: ${product.discountedPrice.toFixed(2)}{' '}
-                        <span className="line-through text-gray-500">
-                            Original Price: ${product.price.toFixed(2)}
-                        </span>
-                    </p>
-                    <p className="text-green-500 font-semibold">
-                        Save {discount}%!
-                    </p>
-                </>
-            ) : (
-                <p className="text-lg font-bold">Price: ${product.price.toFixed(2)}</p>
-            )}
+                {/* Product Details */}
+                <div className="flex-1 ml-6">
+                    <h1 className="text-3xl font-bold mb-4">{product.title}</h1>
+                    <p className="text-gray-600 mb-4">{product.description}</p>
 
-            <p>Rating: {product.rating} stars</p>
-            <p>Tags: {product.tags.join(', ')}</p>
+                    {product.discountedPrice < product.price ? (
+                        <>
+                            <p className="text-lg font-bold">
+                                On sale for: ${product.discountedPrice.toFixed(2)}{' '}
+                                <span className="line-through text-gray-500">
+                                    Original Price: ${product.price.toFixed(2)}
+                                </span>
+                            </p>
+                            <p className="text-green-500 font-semibold">
+                                Save {discount}%!
+                            </p>
+                        </>
+                    ) : (
+                        <p className="text-lg font-bold">Price: ${product.price.toFixed(2)}</p>
+                    )}
 
-            <div>
-                <h4>Reviews:</h4>
+                    <div className="mt-4 mb-6">
+                        <p className="text-lg font-semibold">Rating:</p>
+                        <div className="flex mt-2">{renderStars(product.rating)}</div>
+                    </div>
+
+                    <p className="text-gray-700 mb-4">Tags: {product.tags.join(', ')}</p>
+
+                    <div className="mt-4 mb-6">
+                        <button
+                            onClick={handleAddToCart}
+                            className="w-full py-2 bg-[#B7B1F2] text-white rounded-md shadow-md hover:bg-[#A59EDD] transition-all duration-300"
+                        >
+                            Add to Cart
+                        </button>
+                    </div>
+
+                    <div className="mt-4 mb-6">
+                        <button
+                            onClick={handleBackClick}
+                            className="w-full py-2 bg-[#FDB7EA] text-white rounded-md shadow-md hover:bg-[#F8A8D1] transition-all duration-300"
+                        >
+                            Back to Products
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div className="max-w-5xl mx-auto p-6 bg-white border-t-2 border-gray-300 rounded-lg shadow-lg mt-6">
+                <h4 className="text-xl font-semibold mb-4">Reviews:</h4>
                 <ul>
                     {product.reviews.map((review) => (
-                        <li key={review.id} className="text-sm text-gray-700">
-                            <strong>{review.username}</strong>: {review.description} (Rating: {review.rating} stars)
+                        <li key={review.id} className="flex items-start mb-4 p-4 border-b-2 border-gray-200">
+                            {/* Rating with Stars */}
+                            <div className="mr-4">
+                                <div className="flex">{renderStars(review.rating)}</div>
+                            </div>
+
+                            {/* Review Text */}
+                            <div className="flex-1">
+                                <strong>{review.username}</strong>
+                                <p className="text-sm text-gray-700">{review.description}</p>
+                            </div>
                         </li>
                     ))}
                 </ul>
-            </div>
-
-            <div className="mt-4">
-                <button onClick={handleAddToCart} className="px-4 py-2 bg-blue-500 text-white rounded-md">
-                    Add to Cart
-                </button>
-            </div>
-
-            <div className="mt-4">
-                <button onClick={handleBackClick} className="px-4 py-2 bg-gray-500 text-white rounded-md">
-                    Back to Products
-                </button>
             </div>
         </div>
     );
