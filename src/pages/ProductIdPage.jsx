@@ -7,6 +7,7 @@ const ProductIdPage = () => {
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [showMessage, setShowMessage] = useState(false); 
     const navigate = useNavigate();
     const { addToCart } = useCart();  
 
@@ -39,6 +40,12 @@ const ProductIdPage = () => {
 
     const handleAddToCart = () => {
         addToCart(product);  // Add the current product to the cart
+        setShowMessage(true); // Show the "Item added" message
+
+        // Hide the message after 3 seconds
+        setTimeout(() => {
+            setShowMessage(false);
+        }, 3000); // 3000ms = 3 seconds
     };
 
     const handleBackClick = () => {
@@ -126,6 +133,13 @@ const ProductIdPage = () => {
                             Back to Products
                         </button>
                     </div>
+
+                    {/* Item Added Message (Under "Back to Products" button) */}
+                    {showMessage && (
+                        <p className="mt-2 text-black text-center">
+                            Item added to cart!
+                        </p>
+                    )}
                 </div>
             </div>
 

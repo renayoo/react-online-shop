@@ -1,5 +1,5 @@
 // src/pages/CartPage.jsx
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom"; 
 import { useCart } from "../context/CartContext";
 
 const CartPage = () => {
@@ -50,11 +50,16 @@ const CartPage = () => {
                         {cart.map((product) => {
                             return (
                                 <li key={product.id} className="flex items-center space-x-4 border-b-2 py-4 border-gray-200">
-                                    <img
-                                        src={product.image.url}
-                                        alt={product.title}
-                                        className="w-20 h-20 object-cover rounded"
-                                    />
+                                    
+                                    {/* Clickable img to product id page */}
+                                    <Link to={`/product/${product.id}`}>
+                                        <img
+                                            src={product.image.url}
+                                            alt={product.title}
+                                            className="w-20 h-20 object-cover rounded cursor-pointer"
+                                        />
+                                    </Link>
+
                                     <div className="flex-1">
                                         <p className="text-lg font-semibold">{product.title}</p>
                                         <p>
