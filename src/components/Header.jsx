@@ -15,13 +15,27 @@ const Header = React.memo(() => {
     console.log("Header is rendering"); // Debugging log
 
     return (
-        <header className="flex justify-between items-center p-4 bg-[#FDB7EA] text-white    ">
-            <nav className="flex space-x-4">
-                <Link to="/" className="text-lg">Home</Link>
-                <Link to="/contact" className="text-lg">Contact</Link>
+        <header className="flex justify-between items-center py-4 px-8 bg-[#FDB7EA] text-white">
+            {/* Home + Logo */}
+            <nav className="flex items-center space-x-2"> 
+                <Link to="/" className="flex items-center space-x-2"> 
+                    <img 
+                        src="https://cdn.pixabay.com/photo/2025/01/18/15/51/heart-9342611_1280.png" 
+                        alt="Logo" 
+                        className="w-15 h-15"
+                    />
+                    <span className="text-xl">Home</span>
+                </Link>
             </nav>
+            
+            {/* Contact */}
+            <nav className="text-xl">
+                <Link to="/contact">Contact</Link>
+            </nav>
+            
+            {/* Cart */}
             <nav>
-                <Link to="/cart" className="flex items-center space-x-1 text-lg">
+                <Link to="/cart" className="flex items-center space-x-1 text-xl"> 
                     <span>🛒 Cart</span>
                     <span>{cartCount}</span> {/* Dynamic cart count */}
                 </Link>
