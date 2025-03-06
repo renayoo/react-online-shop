@@ -59,7 +59,7 @@ const CartPage = () => {
                                         <p className="text-lg font-semibold">{product.title}</p>
                                         <p>
                                             {/* Show price and discounted price if applicable */}
-                                            {product.discountedPrice ? (
+                                            {product.discountedPrice && product.discountedPrice < product.price ? (
                                                 <>
                                                     <span className="line-through text-gray-500">
                                                         ${product.price.toFixed(2)}{" "}
@@ -93,7 +93,7 @@ const CartPage = () => {
                                             min="1"
                                         />
                                         
-                                        {/* Remove button (X) */}
+                                        {/* Remove button (-) */}
                                         <button
                                             onClick={() => handleRemoveProduct(product.id)}
                                             className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none"
