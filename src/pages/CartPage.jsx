@@ -1,4 +1,3 @@
-// src/pages/CartPage.jsx
 import { useNavigate, Link } from "react-router-dom"; 
 import { useCart } from "../context/CartContext";
 
@@ -28,6 +27,14 @@ const CartPage = () => {
             e.target.value = 1; // Ensure that quantity doesn't go below 1
         }
         updateQuantity(productId, e.target.value);
+    };
+
+    // Function to decrease quantity by one (but ensuring it doesn't go below 1)
+    const handleDecreaseQuantity = (productId) => {
+        const product = cart.find((item) => item.id === productId);
+        if (product && product.quantity > 1) {
+            updateQuantity(productId, product.quantity - 1);
+        }
     };
 
     return (
@@ -88,6 +95,14 @@ const CartPage = () => {
                                         >
                                             +
                                         </button>
+
+                                        {/* Decrease button (-) */}
+                                        <button
+                                            onClick={() => handleDecreaseQuantity(product.id)}
+                                            className="px-3 py-1 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 focus:outline-none"
+                                        >
+                                            -
+                                        </button>
                                         
                                         {/* Quantity input field */}
                                         <input
@@ -98,12 +113,12 @@ const CartPage = () => {
                                             min="1"
                                         />
                                         
-                                        {/* Remove button (-) */}
+                                        {/* Remove item */}
                                         <button
                                             onClick={() => handleRemoveProduct(product.id)}
                                             className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none"
                                         >
-                                            -
+                                            Remove item
                                         </button>
                                     </div>
                                 </li>
