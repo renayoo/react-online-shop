@@ -9,8 +9,6 @@ import CheckoutSuccessPage from "./pages/CheckoutSuccessPage";
 import ContactPage from "./pages/ContactPage";
 
 function App() {
-    console.log("App component is rendering"); // Debugging log
-
     return (
         <Router>
             <div className="flex flex-col min-h-screen">

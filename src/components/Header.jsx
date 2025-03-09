@@ -12,7 +12,6 @@ const Header = React.memo(() => {
         setCartCount(cart.reduce((acc, product) => acc + product.quantity, 0)); // Count total quantity
     }, [cart]);  // This effect runs every time the cart changes
 
-    console.log("Header is rendering"); // Debugging log
 
     return (
         <header className="flex justify-between items-center py-4 px-8 bg-[#FDB7EA] text-white">

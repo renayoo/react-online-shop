@@ -11,9 +11,7 @@ const CheckoutSuccessPage = () => {
     const [showConfetti, setShowConfetti] = useState(false);
 
     useEffect(() => {
-        console.log("Cart before clearing:", cart);
         clearCart();
-        console.log("Cart cleared successfully.");
 
         // Show confetti when the page loads
         setShowConfetti(true);
