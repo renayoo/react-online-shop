@@ -64,20 +64,24 @@ const ContactPage = () => {
     // Handle form submission
     const handleSubmit = (e) => {
         e.preventDefault();
-
-        // Validate form before submission
-        setIsSubmitted(true); // Mark form as submitted to trigger error checks
-        if (validateForm()) {
-            // If the form is valid, handle submission (e.g., show success message or send data)
-            alert('Form submitted successfully!');
-            setFormData({ fullName: '', subject: '', email: '', body: '' }); // Reset form
-            setErrors({}); // Clear any errors
-            setIsSubmitted(false); // Reset the submission state
-        } else {
-            // If there's an error, focus on the subject field if it's invalid
-            if (errors.subject) {
-                subjectRef.current.focus();
+        try {
+            // Validate form before submission
+            setIsSubmitted(true); // Mark form as submitted to trigger error checks
+            if (validateForm()) {
+                // If the form is valid, handle submission (e.g., show success message or send data)
+                alert('Form submitted successfully!');
+                setFormData({ fullName: '', subject: '', email: '', body: '' }); // Reset form
+                setErrors({}); // Clear any errors
+                setIsSubmitted(false); // Reset the submission state
+            } else {
+                // If there's an error, focus on the subject field if it's invalid
+                if (errors.subject) {
+                    subjectRef.current.focus();
+                }
             }
+        } catch (error) {
+            // Log the error if something goes wrong during submission
+            console.error("Error during form submission:", error);
         }
     };
 

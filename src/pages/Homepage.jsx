@@ -9,22 +9,23 @@ const Homepage = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const fetchProducts = async () => {
-            try {
-                const response = await fetch('https://v2.api.noroff.dev/online-shop');
-                if (!response.ok) {
-                    throw new Error('Failed to fetch products');
-                }
-                const data = await response.json();
-                setProducts(data.data);
-            } catch (error) {
-                setError(error.message);
-            } finally {
-                setLoading(false);
+    const fetchProducts = async () => {
+        try {
+            const response = await fetch('https://v2.api.noroff.dev/online-shop');
+            if (!response.ok) {
+                throw new Error('Failed to fetch products');
             }
-        };
+            const data = await response.json();
+            setProducts(data.data);
+        } catch (error) {
+            console.error('Error fetching products:', error);
+            setError("Oops! Something went wrong. Please try again.");
+        } finally {
+            setLoading(false);
+        }
+    };
 
+    useEffect(() => {
         fetchProducts();
     }, []);
 
@@ -34,7 +35,17 @@ const Homepage = () => {
     );
 
     if (loading) return <div className="text-center text-lg">Loading...</div>;
-    if (error) return <div className="text-center text-red-500">Error: {error}</div>;
+    if (error) return (
+        <div className="text-center text-red-500">
+            {error}
+            <button 
+                onClick={fetchProducts} 
+                className="mt-4 bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition-all"
+            >
+                Retry
+            </button>
+        </div>
+    );
 
     const calculateDiscount = (price, discountedPrice) => {
         if (price > discountedPrice) {
@@ -47,18 +58,19 @@ const Homepage = () => {
         navigate(`/product/${productId}`);
     };
 
-    // Function to generate star rating display
     const renderStars = (rating) => {
         const maxStars = 5;
-        return [...Array(maxStars)].map((_, i) => (
-            <span key={i} className={i < rating ? "text-yellow-500" : "text-gray-400"}>
-                ★
+        const roundedRating = Math.round(rating);
+        return (
+            <span className="text-yellow-500">
+                {'★'.repeat(roundedRating)}
+                {'☆'.repeat(maxStars - roundedRating)}
             </span>
-        ));
+        );
     };
 
     return (
-        <div className="container mx-auto p-6">
+        <div className="min-h-screen p-6">
             <h1 className="text-3xl font-bold text-center mb-6">Welcome to the Store</h1>
 
             <div className="mb-6 flex justify-center">
@@ -67,7 +79,7 @@ const Homepage = () => {
                     placeholder="Search for products..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-1/2 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    className="w-1/2 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white"
                 />
             </div>
 
@@ -106,7 +118,10 @@ const Homepage = () => {
                                     )}
                                 </div>
 
-                                <div className="mt-2 text-sm">{renderStars(product.rating)}</div>
+                                <div className="mt-2 text-sm flex items-center">
+                                    {renderStars(product.rating)}
+                                    <span className="ml-2 text-gray-700">({product.rating.toFixed(1)})</span>
+                                </div>
 
                                 <button
                                     onClick={() => handleViewProduct(product.id)}

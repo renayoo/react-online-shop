@@ -11,19 +11,28 @@ const CheckoutSuccessPage = () => {
     const [showConfetti, setShowConfetti] = useState(false);
 
     useEffect(() => {
-        clearCart();
+        try {
+            // Clear cart upon checkout success
+            clearCart();
 
-        // Show confetti when the page loads
-        setShowConfetti(true);
+            // Show confetti when the page loads
+            setShowConfetti(true);
 
-        // Hide confetti after 5 seconds
-        setTimeout(() => {
-            setShowConfetti(false);
-        }, 5000);
+            // Hide confetti after 5 seconds
+            setTimeout(() => {
+                setShowConfetti(false);
+            }, 5000);
+        } catch (error) {
+            console.error("Error during checkout process:", error);
+        }
     }, []); // Runs only once on mount
 
     const handleBackToStore = () => {
-        navigate("/"); // Navigate back to the store (homepage)
+        try {
+            navigate("/"); // Navigate back to the store (homepage)
+        } catch (error) {
+            console.error("Error navigating back to store:", error);
+        }
     };
 
     return (
@@ -36,7 +45,7 @@ const CheckoutSuccessPage = () => {
             {/* Conditionally render Confetti */}
             {showConfetti && <Confetti />}
             
-            {/*  Container */}
+            {/* Container */}
             <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg text-center">
                 <h2 className="text-2xl font-bold text-green-600">Thank You for Your Purchase!</h2>
                 <p className="mt-2 text-lg">Your order was successful.</p>

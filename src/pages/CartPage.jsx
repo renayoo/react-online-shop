@@ -1,3 +1,4 @@
+// src/pages/CartPage.jsx
 import { useNavigate, Link } from "react-router-dom"; 
 import { useCart } from "../context/CartContext";
 
@@ -18,22 +19,34 @@ const CartPage = () => {
 
     // Function to handle removing a product from the cart
     const handleRemoveProduct = (productId) => {
-        removeFromCart(productId);
+        try {
+            removeFromCart(productId);
+        } catch (error) {
+            console.error("Error removing product from cart:", error);
+        }
     };
 
     // Function to handle updating the quantity manually
     const handleQuantityChange = (productId, e) => {
-        if (e.target.value < 1) {
-            e.target.value = 1; // Ensure that quantity doesn't go below 1
+        try {
+            if (e.target.value < 1) {
+                e.target.value = 1; // Ensure that quantity doesn't go below 1
+            }
+            updateQuantity(productId, e.target.value);
+        } catch (error) {
+            console.error("Error updating quantity:", error);
         }
-        updateQuantity(productId, e.target.value);
     };
 
     // Function to decrease quantity by one (but ensuring it doesn't go below 1)
     const handleDecreaseQuantity = (productId) => {
-        const product = cart.find((item) => item.id === productId);
-        if (product && product.quantity > 1) {
-            updateQuantity(productId, product.quantity - 1);
+        try {
+            const product = cart.find((item) => item.id === productId);
+            if (product && product.quantity > 1) {
+                updateQuantity(productId, product.quantity - 1);
+            }
+        } catch (error) {
+            console.error("Error decreasing quantity:", error);
         }
     };
 
@@ -109,7 +122,7 @@ const CartPage = () => {
                                             type="number"
                                             value={product.quantity}
                                             onChange={(e) => handleQuantityChange(product.id, e)}
-                                            className="w-16 p-1 border rounded-md text-center"
+                                            className="w-16 p-1 border rounded-md text-center bg-white" // Setting background color to white
                                             min="1"
                                         />
                                         
